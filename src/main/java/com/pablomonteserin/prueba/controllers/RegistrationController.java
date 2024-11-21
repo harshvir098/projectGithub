@@ -33,7 +33,11 @@ public class RegistrationController {
         // Create a new user
         User newUser = new User();
         newUser.setUsername(request.getUsername());
-        newUser.setPassword(encodedPassword);
+        newUser.setPassword(encodedPassword);  // Storing the encrypted password
+        newUser.setFirstName(request.getFirstName());
+        newUser.setLastName(request.getLastName());
+        newUser.setAge(request.getAge());
+        newUser.setInterests(request.getInterests());
         newUser.setAccountNonExpired(true);
         newUser.setAccountNonLocked(true);
         newUser.setCredentialsNonExpired(true);

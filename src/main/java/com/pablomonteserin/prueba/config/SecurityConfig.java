@@ -53,8 +53,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> {
                     try {
                         // Definimos que urls estarán desprotegidas y no necesitarán recibir las credenciales para poder ser accedidas
-                        requests.requestMatchers("/auth/register").permitAll().anyRequest().authenticated();
-                    } catch (Exception e) {
+                    	 requests.requestMatchers("/auth/register").permitAll()
+                         // Secure the /events/create endpoint and require authentication
+                         .requestMatchers("/events/create").authenticated()
+                         // Secure all other requests, requiring authentication
+                         .anyRequest().authenticated();                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }).httpBasic(withDefaults());
