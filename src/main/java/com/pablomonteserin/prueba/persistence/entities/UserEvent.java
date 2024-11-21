@@ -19,6 +19,9 @@ public class UserEvent {
 
     private String content; // Content the user will bring to the event
 
+    // NEW: Field to track the invitation status
+    private String invitationStatus = "pending"; // default status is 'pending'
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -50,5 +53,13 @@ public class UserEvent {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getInvitationStatus() {
+        return invitationStatus;
+    }
+
+    public void setInvitationStatus(String invitationStatus) {
+        this.invitationStatus = invitationStatus;
     }
 }
