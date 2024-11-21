@@ -80,4 +80,10 @@ public class EventController {
         }
         return ResponseEntity.status(404).body("Event or User not found");
     }
+    
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<Event>> getAllEvents() {
+        Iterable<Event> events = eventRepository.findAll();  // Fetch all events from the database
+        return ResponseEntity.ok(events); 
+    }
 }
