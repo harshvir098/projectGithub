@@ -32,32 +32,41 @@ public class EventController {
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (loggedInUser != null) {
+            event.setCreator(loggedInUser); // Set the logged-in user as the creator of the event
             eventRepository.save(event);
             return ResponseEntity.ok(event);
         }
         return ResponseEntity.status(401).body(null);
     }
 
-    // Invite participant to an event
+ // Invite Participant and Return Inviter's Name
     @PostMapping("/{eventId}/invite/{userId}")
     public ResponseEntity<String> inviteParticipant(@PathVariable Integer eventId, @PathVariable Integer userId) {
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         Optional<User> userOptional = userRepository.findById(userId);
 
-        if (eventOptional.isPresent() && userOptional.isPresent()) {
+        if (eventOptional.isPresent() && userOptional.isPresent() && loggedInUser != null) {
             Event event = eventOptional.get();
             User user = userOptional.get();
 
+            // Create a new UserEvent to represent the invitation
             UserEvent userEvent = new UserEvent();
-            userEvent.setUser(user);
-            userEvent.setEvent(event);
-            userEvent.setInvitationStatus("pending");
+            userEvent.setUser(user); // Set the invitee
+            userEvent.setEvent(event); // Set the event
+            userEvent.setInviter(loggedInUser); // Set the logged-in user as the inviter
+
+            // Save the invitation to the UserEvent table
             userEventRepository.save(userEvent);
 
-            return ResponseEntity.ok("Participant invited successfully");
+            // Return a response with the inviter's name
+            return ResponseEntity.ok("Participant invited successfully by " + loggedInUser.getUsername());
         }
+
         return ResponseEntity.status(404).body("Event or User not found");
     }
+
 
     // Accept invitation
     @PostMapping("/{eventId}/accept/{userId}")

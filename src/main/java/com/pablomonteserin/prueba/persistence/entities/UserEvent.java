@@ -11,7 +11,7 @@ public class UserEvent {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; // Invitee
 
     @ManyToOne
     @JoinColumn(name = "event_id")
@@ -19,8 +19,11 @@ public class UserEvent {
 
     private String content; // Content the user will bring to the event
 
-    // NEW: Field to track the invitation status
     private String invitationStatus = "pending"; // default status is 'pending'
+
+    @ManyToOne
+    @JoinColumn(name = "inviter_id") // Link to inviter
+    private User inviter; // User who sent the invitation
 
     // Getters and Setters
     public int getId() {
@@ -61,5 +64,13 @@ public class UserEvent {
 
     public void setInvitationStatus(String invitationStatus) {
         this.invitationStatus = invitationStatus;
+    }
+
+    public User getInviter() {
+        return inviter;
+    }
+
+    public void setInviter(User inviter) {
+        this.inviter = inviter;
     }
 }
