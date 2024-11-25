@@ -1,7 +1,6 @@
 package com.pablomonteserin.prueba.persistence.entities;
 
 import java.time.LocalDate;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -16,8 +15,8 @@ public class Event {
     private String location;
 
     @ManyToOne
-    @JoinColumn(name = "creator_id") // Assuming 'creator_id' is the column name for the creator
-    private User creator; // This will store the user who created the event
+    @JoinColumn(name = "creator_id") // Foreign key linking to the User table
+    private User creator; // User who created the event
 
     // Getters and Setters
     public int getId() {
@@ -40,8 +39,8 @@ public class Event {
         return date;
     }
 
-    public void setDate(LocalDate localDate) {
-        this.date = localDate;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public String getLocation() {
@@ -58,5 +57,10 @@ public class Event {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    // Optionally, you can still expose the creatorId via a getter if needed
+    public int getCreatorId() {
+        return creator != null ? creator.getId() : 0; // Safely return creatorId if creator is not null
     }
 }

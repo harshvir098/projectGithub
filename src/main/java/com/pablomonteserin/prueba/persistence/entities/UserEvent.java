@@ -11,19 +11,19 @@ public class UserEvent {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user; // Invitee
+    private User user; // Invitee (the user being invited to the event)
 
     @ManyToOne
     @JoinColumn(name = "event_id")
-    private Event event;
+    private Event event; // The event the user is invited to
 
-    private String content; // Content the user will bring to the event
+    private String content; // Additional content the user may bring to the event
 
-    private String invitationStatus = "pending"; // default status is 'pending'
+    private String invitationStatus = "pending"; // Default status is "pending" until accepted or declined
 
     @ManyToOne
-    @JoinColumn(name = "inviter_id") // Link to inviter
-    private User inviter; // User who sent the invitation
+    @JoinColumn(name = "inviter_id") // Link to inviter (user who sends the invitation)
+    private User inviter;
 
     // Getters and Setters
     public int getId() {
